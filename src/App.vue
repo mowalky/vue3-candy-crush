@@ -6,6 +6,7 @@
         :key="i"
         :style="`background-color:${candy}`"
         @click="update"
+        draggable
       />
     </div>
   </div>
