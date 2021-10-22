@@ -129,7 +129,7 @@ export default {
       checkForColumnOfFour();
       checkForRowOfFour();
       moveIntoSquareBelow();
-    }, 1000);
+    }, 100);
 
     const update = () => {
       randomColorArrangement.value[
