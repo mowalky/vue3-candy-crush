@@ -17,6 +17,7 @@ export default {
   setup() {
     const width = 8;
     const candyColors = ["blue", "green", "orange", "yellow", "purple", "red"];
+
     const randomColorArrangement = ref([]);
 
     const createBoard = () => {
@@ -99,6 +100,25 @@ export default {
       }
     };
 
+    const moveIntoSquareBelow = () => {
+      for (let i = 0; i < width * width - width; i++) {
+        const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+        const isFirstRow = firstRow.includes(i);
+
+        if (isFirstRow && randomColorArrangement.value[i] === "") {
+          const randomColor =
+            candyColors[Math.floor(candyColors.length * Math.random())];
+          randomColorArrangement.value[i] = randomColor;
+        }
+
+        if (randomColorArrangement.value[i + width] === "") {
+          randomColorArrangement.value[i + width] =
+            randomColorArrangement.value[i];
+          randomColorArrangement.value[i] = "";
+        }
+      }
+    };
+
     // create game board
     createBoard();
 
@@ -108,6 +128,7 @@ export default {
       checkForRowOfThree();
       checkForColumnOfFour();
       checkForRowOfFour();
+      moveIntoSquareBelow();
     }, 1000);
 
     const update = () => {
