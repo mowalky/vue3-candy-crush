@@ -5,7 +5,7 @@
         v-for="(candy, i) in randomColorArrangement"
         :key="i"
         :data-id="i"
-        @dragstart="dragStart"
+        @dragstart="dragStart(i)"
         @drop="dragDrop(i)"
         @dragover="(e) => e.preventDefault()"
         @dragenter="(e) => e.preventDefault()"
@@ -24,7 +24,8 @@ export default {
   setup() {
     const width = 8;
     const candyColors = ["blue", "green", "orange", "yellow", "purple", "red"];
-
+    const squareBeingDragged = ref(null);
+    const squareBeingReplaced = ref(null);
     const randomColorArrangement = ref([]);
 
     const createBoard = () => {
@@ -35,16 +36,23 @@ export default {
       }
     };
 
-    const dragStart = () => {
+    const dragStart = (index) => {
       console.log(`drag start`);
+      squareBeingDragged.value = index;
     };
 
     const dragDrop = (index) => {
       console.log(`drag dropped on ${index}`);
+      squareBeingReplaced.value = index;
     };
 
     const dragEnd = () => {
       console.log(`drag end`);
+      const squareBeingReplacedId = parseInt(squareBeingReplaced.value);
+      const squareBeingDraggedId = parseInt(squareBeingDragged.value);
+
+      console.log(`squareBeingReplacedId ${squareBeingReplacedId}`);
+      console.log(`squareBeingDraggedId ${squareBeingDraggedId}`);
     };
 
     const checkForColumnOfThree = () => {
@@ -156,7 +164,13 @@ export default {
       ] = "";
     };
 
-    return { randomColorArrangement, update, dragStart, dragEnd, dragDrop };
+    return {
+      randomColorArrangement,
+      update,
+      dragStart,
+      dragEnd,
+      dragDrop,
+    };
   },
 };
 </script>
