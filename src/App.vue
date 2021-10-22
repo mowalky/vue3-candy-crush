@@ -5,8 +5,8 @@
         v-for="(candy, i) in randomColorArrangement"
         :key="i"
         :data-id="i"
-        @dragstart="dragStart(i)"
-        @drop="dragDrop(i)"
+        @dragstart="dragStart({ index: i, candy: candy })"
+        @drop="dragDrop({ index: i, candy: candy })"
         @dragover="(e) => e.preventDefault()"
         @dragenter="(e) => e.preventDefault()"
         @dragleave="(e) => e.preventDefault()"
@@ -24,8 +24,8 @@ export default {
   setup() {
     const width = 8;
     const candyColors = ["blue", "green", "orange", "yellow", "purple", "red"];
-    const squareBeingDragged = ref(null);
-    const squareBeingReplaced = ref(null);
+    const squareBeingDragged = ref({});
+    const squareBeingReplaced = ref({});
     const randomColorArrangement = ref([]);
 
     const createBoard = () => {
@@ -36,23 +36,57 @@ export default {
       }
     };
 
-    const dragStart = (index) => {
-      console.log(`drag start`);
-      squareBeingDragged.value = index;
+    const dragStart = ({ index, candy }) => {
+      console.log(`drag ${candy} start ${index}`);
+      squareBeingDragged.value = { index, candy };
     };
 
-    const dragDrop = (index) => {
-      console.log(`drag dropped on ${index}`);
-      squareBeingReplaced.value = index;
+    const dragDrop = ({ index, candy }) => {
+      console.log(`drag ${candy} dropped on ${index}`);
+      squareBeingReplaced.value = { index, candy };
     };
 
     const dragEnd = () => {
       console.log(`drag end`);
-      const squareBeingReplacedId = parseInt(squareBeingReplaced.value);
-      const squareBeingDraggedId = parseInt(squareBeingDragged.value);
+      const squareBeingReplacedId = parseInt(squareBeingReplaced.value.index);
+      const squareBeingDraggedId = parseInt(squareBeingDragged.value.index);
+
+      randomColorArrangement.value[squareBeingReplacedId] =
+        squareBeingDragged.value.candy;
+
+      randomColorArrangement.value[squareBeingDraggedId] =
+        squareBeingReplaced.value.candy;
 
       console.log(`squareBeingReplacedId ${squareBeingReplacedId}`);
       console.log(`squareBeingDraggedId ${squareBeingDraggedId}`);
+
+      // const validMoves = [
+      //   squareBeingDraggedId - 1,
+      //   squareBeingDraggedId - width,
+      //   squareBeingDraggedId + 1,
+      //   squareBeingDraggedId + width,
+      // ];
+
+      //const validMove = validMoves.includes(squareBeingReplacedId);
+
+      // const isAColumnofThree = checkForColumnOfThree();
+      // const isARowofThree = checkForRowOfThree();
+      // const isAColumnOfFour = checkForColumnOfFour();
+      // const isARowOfFour = checkForRowOfFour();
+
+      // if (
+      //   squareBeingReplacedId &&
+      //   validMove &&
+      //   (isAColumnofThree ||
+      //     isARowofThree ||
+      //     isACol ||
+      //     isAColumnOfFour ||
+      //     isARowOfFour)
+      // ) {
+      //   squareBeingDragged.value = {};
+      //   squareBeingReplaced.value = {};
+      // } else {
+      // }
     };
 
     const checkForColumnOfThree = () => {
@@ -67,6 +101,7 @@ export default {
           columnOfThree.forEach(
             (square) => (randomColorArrangement.value[square] = "")
           );
+          return true;
         }
       }
     };
@@ -87,6 +122,7 @@ export default {
           rowOfThree.forEach(
             (square) => (randomColorArrangement.value[square] = "")
           );
+          return true;
         }
       }
     };
@@ -103,6 +139,7 @@ export default {
           columnOfFour.forEach(
             (square) => (randomColorArrangement.value[square] = "")
           );
+          return true;
         }
       }
     };
@@ -123,6 +160,7 @@ export default {
           rowOfFour.forEach(
             (square) => (randomColorArrangement.value[square] = "")
           );
+          return true;
         }
       }
     };
