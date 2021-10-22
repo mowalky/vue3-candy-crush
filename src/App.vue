@@ -4,9 +4,15 @@
       <img
         v-for="(candy, i) in randomColorArrangement"
         :key="i"
-        :style="`background-color:${candy}`"
-        @click="update"
+        :data-id="i"
+        @dragstart="dragStart"
+        @drop="dragDrop(i)"
+        @dragover="(e) => e.preventDefault()"
+        @dragenter="(e) => e.preventDefault()"
+        @dragleave="(e) => e.preventDefault()"
+        @dragend="dragEnd"
         draggable
+        :src="`https://raw.githubusercontent.com/reddtoric/candy-crush/master/graphics/${candy}-candy.png`"
       />
     </div>
   </div>
@@ -27,6 +33,18 @@ export default {
           candyColors[Math.floor(candyColors.length * Math.random())];
         randomColorArrangement.value.push(randomColor);
       }
+    };
+
+    const dragStart = () => {
+      console.log(`drag start`);
+    };
+
+    const dragDrop = (index) => {
+      console.log(`drag dropped on ${index}`);
+    };
+
+    const dragEnd = () => {
+      console.log(`drag end`);
     };
 
     const checkForColumnOfThree = () => {
@@ -138,7 +156,7 @@ export default {
       ] = "";
     };
 
-    return { randomColorArrangement, update };
+    return { randomColorArrangement, update, dragStart, dragEnd, dragDrop };
   },
 };
 </script>
