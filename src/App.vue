@@ -12,7 +12,7 @@
         @dragleave="(e) => e.preventDefault()"
         @dragend="dragEnd"
         draggable
-        :src="`https://raw.githubusercontent.com/reddtoric/candy-crush/master/graphics/${candy}-candy.png`"
+        :src="require(`@/assets/${candy}.png`)"
       />
     </div>
   </div>
@@ -23,7 +23,20 @@ import { ref } from "vue";
 export default {
   setup() {
     const width = 8;
-    const candyColors = ["blue", "green", "orange", "yellow", "purple", "red"];
+    const candyColors = [
+      "blue-candy",
+      "blue-special",
+      "green-candy",
+      "green-special",
+      // "orange-candy",
+      // "orange-special",
+      // "yellow-candy",
+      // "purple-candy",
+      // "purple-special",
+      // "red-candy",
+      // "red-special",
+      // "color-bomb",
+    ];
     const squareBeingDragged = ref({});
     const squareBeingReplaced = ref({});
     let randomColorArrangement = ref([]);
@@ -86,7 +99,6 @@ export default {
           squareBeingReplaced.value.candy;
         randomColorArrangement.value[squareBeingDraggedId] =
           squareBeingDragged.value.candy;
-        randomColorArrangement = [...randomColorArrangement];
       }
     };
 
@@ -100,7 +112,7 @@ export default {
           )
         ) {
           columnOfThree.forEach(
-            (square) => (randomColorArrangement.value[square] = "")
+            (square) => (randomColorArrangement.value[square] = "blank")
           );
           return true;
         }
@@ -121,7 +133,7 @@ export default {
           )
         ) {
           rowOfThree.forEach(
-            (square) => (randomColorArrangement.value[square] = "")
+            (square) => (randomColorArrangement.value[square] = "blank")
           );
           return true;
         }
@@ -138,7 +150,7 @@ export default {
           )
         ) {
           columnOfFour.forEach(
-            (square) => (randomColorArrangement.value[square] = "")
+            (square) => (randomColorArrangement.value[square] = "blank")
           );
           return true;
         }
@@ -159,7 +171,7 @@ export default {
           )
         ) {
           rowOfFour.forEach(
-            (square) => (randomColorArrangement.value[square] = "")
+            (square) => (randomColorArrangement.value[square] = "blank")
           );
           return true;
         }
@@ -171,16 +183,16 @@ export default {
         const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
         const isFirstRow = firstRow.includes(i);
 
-        if (isFirstRow && randomColorArrangement.value[i] === "") {
+        if (isFirstRow && randomColorArrangement.value[i] === "blank") {
           const randomColor =
             candyColors[Math.floor(candyColors.length * Math.random())];
           randomColorArrangement.value[i] = randomColor;
         }
 
-        if (randomColorArrangement.value[i + width] === "") {
+        if (randomColorArrangement.value[i + width] === "blank") {
           randomColorArrangement.value[i + width] =
             randomColorArrangement.value[i];
-          randomColorArrangement.value[i] = "";
+          randomColorArrangement.value[i] = "blank";
         }
       }
     };
