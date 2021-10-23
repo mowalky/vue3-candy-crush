@@ -26,7 +26,7 @@ export default {
     const candyColors = ["blue", "green", "orange", "yellow", "purple", "red"];
     const squareBeingDragged = ref({});
     const squareBeingReplaced = ref({});
-    const randomColorArrangement = ref([]);
+    let randomColorArrangement = ref([]);
 
     const createBoard = () => {
       for (let i = 0; i < width * width; i++) {
@@ -60,33 +60,34 @@ export default {
       console.log(`squareBeingReplacedId ${squareBeingReplacedId}`);
       console.log(`squareBeingDraggedId ${squareBeingDraggedId}`);
 
-      // const validMoves = [
-      //   squareBeingDraggedId - 1,
-      //   squareBeingDraggedId - width,
-      //   squareBeingDraggedId + 1,
-      //   squareBeingDraggedId + width,
-      // ];
+      const validMoves = [
+        squareBeingDraggedId - 1,
+        squareBeingDraggedId - width,
+        squareBeingDraggedId + 1,
+        squareBeingDraggedId + width,
+      ];
 
-      //const validMove = validMoves.includes(squareBeingReplacedId);
+      const validMove = validMoves.includes(squareBeingReplacedId);
 
-      // const isAColumnofThree = checkForColumnOfThree();
-      // const isARowofThree = checkForRowOfThree();
-      // const isAColumnOfFour = checkForColumnOfFour();
-      // const isARowOfFour = checkForRowOfFour();
+      const isAColumnOfThree = checkForColumnOfThree();
+      const isARowOfThree = checkForRowOfThree();
+      const isAColumnOfFour = checkForColumnOfFour();
+      const isARowOfFour = checkForRowOfFour();
 
-      // if (
-      //   squareBeingReplacedId &&
-      //   validMove &&
-      //   (isAColumnofThree ||
-      //     isARowofThree ||
-      //     isACol ||
-      //     isAColumnOfFour ||
-      //     isARowOfFour)
-      // ) {
-      //   squareBeingDragged.value = {};
-      //   squareBeingReplaced.value = {};
-      // } else {
-      // }
+      if (
+        squareBeingReplacedId &&
+        validMove &&
+        (isAColumnOfThree || isARowOfThree || isAColumnOfFour || isARowOfFour)
+      ) {
+        squareBeingDragged.value = {};
+        squareBeingReplaced.value = {};
+      } else {
+        randomColorArrangement.value[squareBeingReplacedId] =
+          squareBeingReplaced.value.candy;
+        randomColorArrangement.value[squareBeingDraggedId] =
+          squareBeingDragged.value.candy;
+        randomColorArrangement = [...randomColorArrangement];
+      }
     };
 
     const checkForColumnOfThree = () => {
