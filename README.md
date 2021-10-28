@@ -1,24 +1,7 @@
 # vue3-candy-crush
 
-## Project setup
-```
-npm install
-```
+Tutorial I followed: https://www.youtube.com/watch?v=PBrEq9Wd6_U&ab_channel=CodewithAniaKub%C3%B3w
 
-### Compiles and hot-reloads for development
 ```
-npm run serve
+Demo - [https://mowalky.github.io/vue3-candy-crush/]https://mowalky.github.io/vue3-candy-crush/
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
